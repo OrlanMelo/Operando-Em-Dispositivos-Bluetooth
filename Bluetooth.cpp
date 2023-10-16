@@ -31,12 +31,12 @@ public:
 		if (Radio == (HANDLE)ERROR_NO_MORE_ITEMS)
 		{
 			Quantidade -= 1;
-			cout << "Não foi encontrado nenhum rádio bluetooth..\n";
+			cout << "NÃ£o foi encontrado nenhum rÃ¡dio bluetooth..\n";
 		}
 		else if (Radio == (HANDLE)ERROR_OUTOFMEMORY)
 		{
 			Quantidade -= 1;
-			cout << "Não há memória suficiente para o uso da função..\n";
+			cout << "NÃ£o hÃ¡ memÃ³ria suficiente para o uso da funÃ§Ã£o..\n";
 		}
 
 		do
@@ -44,7 +44,7 @@ public:
 			Quantidade += 1;
 		} while (BluetoothFindNextRadio(Radio,&hRadio));
 
-		cout << "Rádios bluetooth encontrados: " << Quantidade;
+		cout << "RÃ¡dios bluetooth encontrados: " << Quantidade;
 
 		BluetoothFindRadioClose(Radio);
 	}
@@ -75,14 +75,14 @@ public:
 			Pesquisa.fReturnRemembered = TRUE;//Relembrado.
 			Pesquisa.fReturnUnknown = TRUE;//Desconhecido.
 			Pesquisa.hRadio = NULL;
-			Pesquisa.cTimeoutMultiplier = 20;//Tempo, o tamanho máximo é 48.
-			Pesquisa.fIssueInquiry = TRUE;//Nova busca após a primeira tentativa, usando o mesmo tempo fornecido.
+			Pesquisa.cTimeoutMultiplier = 20;//Tempo, o tamanho mÃ¡ximo Ã© 48.
+			Pesquisa.fIssueInquiry = TRUE;//Nova busca apÃ³s a primeira tentativa, usando o mesmo tempo fornecido.
 		}
 
 		Find1 = BluetoothFindFirstDevice(&Pesquisa, &Dispositivo);
 		if (Find1 == NULL)
 		{
-			cout << "Não foram encontrados dispositivos bluetooth..\n";
+			cout << "NÃ£o foram encontrados dispositivos bluetooth..\n";
 			Quantidade -= 1;
 		}
 		do
@@ -90,12 +90,16 @@ public:
 			Quantidade += 1;
 
 			_tprintf(TEXT("Dispositivo: %s\n"), Dispositivo.szName);
-			cout << "Endereço: " << Dispositivo.Address.ullLong << '\n';
+			cout << "EndereÃ§o: " << Dispositivo.Address.ullLong << '\n';
 			
 			if (Dispositivo.fConnected == TRUE)
+			{
 				cout << "Status: Conectado ao dispositivo\n";
+			}
 			else
-				cout << "Status: Não conectado\n";
+			{
+				cout << "Status: NÃ£o conectado\n";
+			}
 
 			cout << "\n";
 
@@ -122,10 +126,12 @@ public:
 		BluetoothGetDeviceInfo(Find1, &Dispositivo);
 
 		DWORD Res;
-		PWSTR Senha = L"1234";//O sistema irá determinar automaticamente.
+		PWSTR Senha = L"1234";//O sistema irÃ¡ determinar automaticamente.
 		Res = BluetoothAuthenticateDevice(0, 0, &Dispositivo, Senha, 4);
 		if (Res == ERROR_CANCELLED)
-			cout << "O usuário cancelou a operação..\n";
+		{
+			cout << "O usuÃ¡rio cancelou a operaÃ§Ã£o..\n";
+		}
 		else if (Res == ERROR_SUCCESS) {}
 	}
 
@@ -134,11 +140,11 @@ public:
 int main()
 {
 
-	cout << "O assistente está executando pesquisas e operações para dispositivos bluetooth...";
+	cout << "O assistente estÃ¡ executando pesquisas e operaÃ§Ãµes para dispositivos bluetooth...";
 
 	Funcoes.EnumerarRadiosBluetooth();
 	Funcoes.EnumerarDispositivosBluetooth(false);
-	Funcoes.ConectarDispositivoBluetoothPorPerto();//O mais próximo será notificado.
+	Funcoes.ConectarDispositivoBluetoothPorPerto();//O mais prÃ³ximo serÃ¡ notificado.
 
 	//Use apenas se o dispositivo estiver conectado a este computador.
 	//Funcoes.EnumerarDispositivosBluetooth(true);
